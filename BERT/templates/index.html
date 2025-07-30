@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Web Monitoring - AI Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600&display=swap');
+        body {
+            background: rgba(0, 0, 0, 0.8);
+            color: #c0c0c0;
+            font-family: 'Fira Code', monospace;
+            text-align: center;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+        h1, h2 {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 10px;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .glitch {
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+            color: #fff;
+            animation: glitch 1.5s infinite;
+        }
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px #ff0077; }
+            25% { text-shadow: -2px -2px #00ffee; }
+            50% { text-shadow: 2px -2px #ffcc00; }
+            75% { text-shadow: -2px 2px #ffffff; }
+            100% { text-shadow: 2px 2px #ff0077; }
+        }
+        .severity-high { color: #ff5555; }
+        .severity-medium { color: #ffaa00; }
+        .severity-low { color: #50fa7b; }
+    </style>
+    <script>
+        function refreshPage() {
+            setTimeout(function() {
+                location.reload();
+            }, 5000);
+        }
+    </script>
+</head>
+<body onload="refreshPage()">
+    <h1 class="glitch">Dark Web Monitoring AI</h1>
+    <h2>Evaluation Metrics</h2>
+    <ul>
+        <li><strong>Loss:</strong> {{ results.eval_loss }}</li>
+        <li><strong>Accuracy:</strong> {{ results.eval_accuracy }}</li>
+        <li><strong>Precision:</strong> {{ results.eval_precision }}</li>
+        <li><strong>Recall:</strong> {{ results.eval_recall }}</li>
+        <li><strong>F1 Score:</strong> {{ results.eval_f1 }}</li>
+    </ul>
+    <h2>Scanned Files & Threat Levels</h2>
+    <ul>
+        {% for folder, files in file_results.items() %}
+            <li><strong>{{ folder }}</strong></li>
+            <ul>
+                {% for file, severity in files.items() %}
+                    <li>{{ file }}: <span class="severity-{{ severity }}">Severity - {{ severity }}</span></li>
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+</body>
+</html>

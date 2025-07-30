@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illegal Exploits</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: "Courier New", monospace;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .exploit-table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: black;
+        }
+
+        .exploit-table th, .exploit-table td {
+            border: 1px solid lime;
+            padding: 10px;
+        }
+
+        .exploit-table th {
+            background-color: #111;
+        }
+
+        .buy-button {
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .buy-button:hover {
+            background-color: red;
+            color: black;
+            text-shadow: 0 0 5px white;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            25% { text-shadow: -2px -2px blue; }
+            50% { text-shadow: 2px -2px green; }
+            75% { text-shadow: -2px 2px yellow; }
+            100% { text-shadow: 2px 2px red; }
+        }
+
+        h1 {
+            animation: glitch 0.2s infinite;
+        }
+    </style>
+    <script>
+        function redirectToPayment() {
+            window.location.href = "payment.html";
+        }
+    </script>
+</head>
+<body>
+    <h1>Zero-Day Exploits Marketplace</h1>
+    <p>Exclusive high-value exploits available for purchase.</p>
+    <table class="exploit-table">
+        <tr>
+            <th>Exploit Name</th>
+            <th>Target System</th>
+            <th>Risk Level</th>
+            <th>Price (BTC)</th>
+        </tr>
+        <tr>
+            <td>Remote Kernel Overflow</td>
+            <td>Windows 11</td>
+            <td>Critical</td>
+            <td>0.5 BTC</td>
+        </tr>
+        <tr>
+            <td>PrivEsc Vulnerability</td>
+            <td>Linux Kernel</td>
+            <td>High</td>
+            <td>0.3 BTC</td>
+        </tr>
+        <tr>
+            <td>RCE in WebServer</td>
+            <td>Apache/Nginx</td>
+            <td>Critical</td>
+            <td>0.7 BTC</td>
+        </tr>
+    </table>
+    <br>
+    <button class="buy-button" onclick="redirectToPayment()">Buy Now</button>
+</body>
+</html>

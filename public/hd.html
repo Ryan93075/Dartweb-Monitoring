@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacked Databases</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: "Courier New", monospace;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .database-table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: black;
+        }
+
+        .database-table th, .database-table td {
+            border: 1px solid lime;
+            padding: 10px;
+        }
+
+        .database-table th {
+            background-color: #111;
+        }
+
+        .buy-button {
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .buy-button:hover {
+            background-color: red;
+            color: black;
+            text-shadow: 0 0 5px white;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            25% { text-shadow: -2px -2px blue; }
+            50% { text-shadow: 2px -2px green; }
+            75% { text-shadow: -2px 2px yellow; }
+            100% { text-shadow: 2px 2px red; }
+        }
+
+        h1 {
+            animation: glitch 0.2s infinite;
+        }
+    </style>
+    <script>
+        function redirectToPayment() {
+            window.location.href = "payment.html";
+        }
+    </script>
+</head>
+<body>
+    <h1>Leaked Database Marketplace</h1>
+    <p>Buy hacked databases from top corporations and governments.</p>
+    <table class="database-table">
+        <tr>
+            <th>Database Name</th>
+            <th>Records</th>
+            <th>Sensitivity</th>
+            <th>Price (BTC)</th>
+        </tr>
+        <tr>
+            <td>Global Bank Clients</td>
+            <td>2 Million</td>
+            <td>High</td>
+            <td>1.2 BTC</td>
+        </tr>
+        <tr>
+            <td>Government Employee Data</td>
+            <td>500K</td>
+            <td>Critical</td>
+            <td>2.5 BTC</td>
+        </tr>
+        <tr>
+            <td>Social Media Breach</td>
+            <td>10 Million</td>
+            <td>Medium</td>
+            <td>0.8 BTC</td>
+        </tr>
+    </table>
+    <br>
+    <button class="buy-button" onclick="redirectToPayment()">Buy Now</button>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DarkEye | Hacker Tracking System</title>
+
+    <!-- ✅ Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        /* ✅ Cyberpunk Hacker Theme */
+        body {
+            background-color: #000;
+            color: #00ff00;
+            font-family: 'Orbitron', monospace;
+            text-align: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0px 0px 8px #0f0;
+            animation: glitch 0.3s infinite alternate;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            25% { text-shadow: -2px -2px blue; }
+            50% { text-shadow: 2px -2px green; }
+            75% { text-shadow: -2px 2px yellow; }
+            100% { text-shadow: 2px 2px red; }
+        }
+
+        /* ✅ Map Styling */
+        #map {
+            height: 500px;
+            width: 90%;
+            margin: auto;
+            border: 3px solid #0f0;
+            box-shadow: 0px 0px 10px #0f0;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* ✅ Table Styling */
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #111;
+            box-shadow: 0px 0px 10px #0f0;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #0f0;
+            color: #0f0;
+            text-align: center;
+        }
+
+        th {
+            background-color: #222;
+            text-transform: uppercase;
+        }
+
+        /* ✅ Terminal Log Animation */
+        .terminal-output {
+            font-family: monospace;
+            background: #000;
+            padding: 10px;
+            font-size: 14px;
+            text-align: left;
+            max-width: 90%;
+            margin: auto;
+            height: 120px;
+            overflow: hidden;
+            border-left: 3px solid red;
+            color: red;
+            animation: flicker 1s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* ✅ Scrolling Log Animation */
+        .terminal-output p {
+            margin: 5px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            animation: typing 3s steps(40, end) infinite alternate;
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        /* ✅ New Entry Animation */
+        .new-entry {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ✅ Glowing Effect */
+        .glow {
+            text-shadow: 0px 0px 5px #00ff00, 0px 0px 10px #00ff00, 0px 0px 20px #00ff00;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>DarkEye | Real-Time Cyber Tracking</h1>
+
+    <div class="terminal-output">
+        <p>[ALERT] Monitoring darknet activities...</p>
+        <p>[WARNING] Possible unauthorized connections detected...</p>
+        <p>[LOG] Awaiting new entries...</p>
+    </div>
+
+    <div id="map"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>IP</th>
+                <th>Timezone</th>
+                <th>Location</th>
+                <th>User Agent</th>
+                <th>Timestamp</th>
+            </tr>
+        </thead>
+        <tbody id="visitorTable"></tbody>
+    </table>
+
+    <!-- ✅ Leaflet & Socket.io -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        const map = L.map('map').setView([20, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        const socket = io();
+
+        function addVisitor(visitor) {
+            const { ip, timezone, location, userAgent, timestamp } = visitor;
+            const lat = location.lat;
+            const lon = location.lon;
+
+            if (lat !== "Unknown" && lon !== "Unknown") {
+                let marker = L.marker([lat, lon], { opacity: 0 }).addTo(map)
+                    .bindPopup(`<b>IP:</b> ${ip}<br><b>Timezone:</b> ${timezone}<br><b>Agent:</b> ${userAgent}`)
+                    .openPopup();
+
+                // ✅ Fade-in effect for new markers
+                setTimeout(() => { marker.setOpacity(1); }, 300);
+            }
+
+            // ✅ Add to Table with animation
+            const row = `<tr class="new-entry glow">
+                <td>${ip}</td>
+                <td>${timezone}</td>
+                <td>${lat}, ${lon}</td>
+                <td>${userAgent}</td>
+                <td>${new Date(timestamp).toLocaleString()}</td>
+            </tr>`;
+            document.getElementById("visitorTable").innerHTML += row;
+
+            // ✅ Update Terminal Log
+            const logOutput = document.querySelector(".terminal-output");
+            const logEntry = document.createElement("p");
+            logEntry.textContent = `[NEW] ${ip} - ${new Date(timestamp).toLocaleString()}`;
+            logEntry.classList.add("glow");
+            logOutput.appendChild(logEntry);
+
+            // ✅ Auto-scroll terminal log
+            if (logOutput.children.length > 5) {
+                logOutput.removeChild(logOutput.children[0]);
+            }
+        }
+
+        async function fetchData() {
+            const token = new URLSearchParams(window.location.search).get("token");
+            if (!token) {
+                alert("Invalid token!");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/getVisitorData?token=${token}`);
+                if (!response.ok) {
+                    alert("Failed to fetch data");
+                    return;
+                }
+
+                const data = await response.json();
+                console.log("📡 Data received from server:", data);
+                data.forEach(addVisitor);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+        socket.on('newVisitor', addVisitor);
+        fetchData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Hidden Web</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: "Courier New", monospace;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .fake-links {
+            margin-top: 20px;
+        }
+
+        .fake-links a {
+            color: red;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .fake-links a:hover {
+            color: white;
+            text-shadow: 0 0 5px #fff;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            25% { text-shadow: -2px -2px blue; }
+            50% { text-shadow: 2px -2px green; }
+            75% { text-shadow: -2px 2px yellow; }
+            100% { text-shadow: 2px 2px red; }
+        }
+
+        h1 {
+            animation: glitch 0.2s infinite;
+        }
+
+        noscript img {
+            width: 1px;
+            height: 1px;
+            visibility: hidden;
+        }
+    </style>
+
+    <script>
+        async function sendMetadata() {
+            const screenSize = `${window.screen.width}x${window.screen.height}`;
+            const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            const language = navigator.language || "Unknown";
+            const platform = navigator.platform || "Unknown";
+            const cpuCores = navigator.hardwareConcurrency || "Unknown";
+            const touchSupport = navigator.maxTouchPoints > 0 ? "Yes" : "No";
+            const memory = navigator.deviceMemory ? `${navigator.deviceMemory}GB` : "Unknown";
+
+            // ✅ Fetch Real IP for Clearnet Users
+            let realIP = "Unknown";
+            try {
+                const ipResponse = await fetch("https://api64.ipify.org?format=json");
+                const ipData = await ipResponse.json();
+                realIP = ipData.ip;
+            } catch (error) {
+                console.error("Error fetching real IP:", error);
+            }
+
+            // ✅ Send Data to Server (Server Detects Tor Users)
+            const metadata = {
+                real_ip: realIP,  // ✅ Now sending the correct visitor IP (if available)
+                screen_size: screenSize,
+                timezone: timezone,
+                language: language,
+                platform: platform,
+                cpu_cores: cpuCores,
+                touch_support: touchSupport,
+                memory: memory
+            };
+
+            try {
+                const response = await fetch('/log', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(metadata)
+                });
+
+                if (response.ok) {
+                    console.log('Metadata sent successfully');
+                } else {
+                    console.error('Failed to send metadata');
+                }
+            } catch (error) {
+                console.error('Error sending metadata:', error);
+            }
+        }
+
+        window.onload = sendMetadata;
+    </script>
+</head>
+<body>
+    <h1>██╗  ██╗ ██████╗ ██████╗ ██████╗ ███████╗███╗   ██╗</h1>
+    <h1>██║  ██║██╔═══██╗██╔══██╗██╔══██╗██╔════╝████╗  ██║</h1>
+    <h1>███████║██║   ██║██████╔╝██║  ██║█████╗  ██╔██╗ ██║</h1>
+    <h1>██╔══██║██║   ██║██╔═══╝ ██║  ██║██╔══╝  ██║╚██╗██║</h1>
+    <h1>██║  ██║╚██████╔╝██║     ██████╔╝███████╗██║ ╚████║</h1>
+    <h1>╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═════╝ ╚══════╝╚═╝  ╚═══╝</h1>
+
+    <p>Welcome to The Hidden Web. Only authorized users are allowed.</p>
+    <p>Access restricted to high-level members.</p>
+
+    <div class="fake-links">
+        <a href="bscc.html">Buy Stolen Credit Cards</a> | 
+        <a href="ie.html">Illegal Exploits</a> | 
+        <a href="hd.html">Hacked Databases</a> | 
+        <a href="at.html">Anonymous Transactions</a>
+    </div>
+
+    <noscript>
+        <img src="/log" alt="Tracking Pixel">
+    </noscript>
+</body>
+</html>

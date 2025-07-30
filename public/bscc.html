@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stolen Credit Cards</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #0f0;
+            font-family: "Courier New", monospace;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .data-table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+            background-color: black;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid lime;
+            padding: 10px;
+        }
+
+        .data-table th {
+            background-color: #111;
+        }
+
+        .buy-button {
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .buy-button:hover {
+            background-color: red;
+            color: black;
+            text-shadow: 0 0 5px white;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 2px red; }
+            25% { text-shadow: -2px -2px blue; }
+            50% { text-shadow: 2px -2px green; }
+            75% { text-shadow: -2px 2px yellow; }
+            100% { text-shadow: 2px 2px red; }
+        }
+
+        h1 {
+            animation: glitch 0.2s infinite;
+        }
+    </style>
+    <script>
+        function redirectToPayment() {
+            window.location.href = "payment.html";
+        }
+    </script>
+</head>
+<body>
+    <h1>Leaked Credit Card Database</h1>
+    <p>Thousands of stolen credit card details available for purchase.</p>
+    <table class="data-table">
+        <tr>
+            <th>Card Number</th>
+            <th>Expiration Date</th>
+            <th>CVV</th>
+            <th>Price (BTC)</th>
+        </tr>
+        <tr>
+            <td>4532 7896 1234 5678</td>
+            <td>12/26</td>
+            <td>345</td>
+            <td>0.02 BTC</td>
+        </tr>
+        <tr>
+            <td>5196 2548 7896 3214</td>
+            <td>08/27</td>
+            <td>678</td>
+            <td>0.03 BTC</td>
+        </tr>
+        <tr>
+            <td>6011 7485 9654 3214</td>
+            <td>03/28</td>
+            <td>982</td>
+            <td>0.015 BTC</td>
+        </tr>
+    </table>
+    <br>
+    <button class="buy-button" onclick="redirectToPayment()">Buy Now</button>
+</body>
+</html>
